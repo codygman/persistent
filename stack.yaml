@@ -12,3 +12,7 @@ packages:
 
 extra-deps:
   - resourcet-pool-0.1.0.0
+nix:
+  pure: true
+  enable: true
+  packages: [ zlib postgresql mysql80 pcre mysql-client zstd openssl ]
