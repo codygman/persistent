@@ -22,6 +22,11 @@ import Database.Persist.Class.PersistStore
 import Database.Persist.Sql.Types
 import Database.Persist.Sql.Types.Internal (IsolationLevel)
 import Database.Persist.Sql.Raw
+import Debug.Trace
+
+
+debug :: c -> String -> c
+debug = flip trace
 
 -- | The returned 'Acquire' gets a connection from the pool, but does __NOT__
 -- start a new transaction. Used to implement 'acquireSqlConnFromPool' and
@@ -38,7 +43,7 @@ unsafeAcquireSqlConnFromPool = do
     pool <- MonadReader.ask
 
     let freeConn :: (backend, LocalPool backend) -> ReleaseType -> IO ()
-        freeConn (res, localPool) relType = case relType of
+        freeConn (res, localPool) relType = case (relType `debug` "what is reltype: ") of
             ReleaseException -> P.destroyResource pool localPool res
             _ -> P.putResource localPool res
 
