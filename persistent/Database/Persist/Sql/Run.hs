@@ -43,7 +43,7 @@ unsafeAcquireSqlConnFromPool = do
     pool <- MonadReader.ask
 
     let freeConn :: (backend, LocalPool backend) -> ReleaseType -> IO ()
-        freeConn (res, localPool) relType = case (relType `debug` "what is reltype: ") of
+        freeConn (res, localPool) relType = case (("relType: " <> show relType) `trace` relType) of
             ReleaseException -> P.destroyResource pool localPool res
             _ -> P.putResource localPool res
 
