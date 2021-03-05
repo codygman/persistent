@@ -9,3 +9,8 @@ packages:
   - ./persistent-postgresql
   - ./persistent-redis
   - ./persistent-qq
+
+nix:
+  pure: true
+  enable: true
+  packages: [ zlib postgresql mysql80 pcre mysql-client zstd openssl ]
