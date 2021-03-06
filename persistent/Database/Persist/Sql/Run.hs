@@ -227,12 +227,10 @@ createSqlPoolWithConfig mkConn config = do
     -- Resource pool will swallow any exceptions from close. We want to log
     -- them instead.
     let loggedClose :: backend -> IO ()
-        loggedClose backend = close' backend `UE.catchAny` \e -> runLoggingT
-          (logError $ T.pack $ "Error closing database connection in pool: " ++ show e)
-          logFunc
-    liftIO $ createPool 
-        (mkConn logFunc) 
-        loggedClose 
+        loggedClose backend = close' backend
+    liftIO $ createPool
+        (mkConn logFunc)
+        loggedClose
         (connectionPoolConfigStripes config)
         (connectionPoolConfigIdleTimeout config)
         (connectionPoolConfigSize config)
